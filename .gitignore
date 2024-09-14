@@ -1,0 +1,23 @@
+# Ignore LaTeX auxiliary and intermediate files
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+
+# Ignore PDF files
+*.pdf
+
+# Ignore temporary files created by the editor or system
+*.tmp
+*.bak
+*.swp
+
+# Ignore VSCode-specific files (if applicable)
+.vscode/

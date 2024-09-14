@@ -1,0 +1,80 @@
+\section{Basic definitions}
+Formally: extract semantic
+and geometric information
+from an image.
+
+
+\begin{enumerate}
+    \item Semantic information
+          \begin{enumerate}
+              \item What objects are in the image?
+              \item Who is the person?
+              \item What is the person doing?
+          \end{enumerate}
+    \item Geometric information
+          \begin{enumerate}
+              \item Where are objects in the image?
+              \item How far is the person from me?
+              \item What is the shape of the car?
+              \item In what direction is the car moving?
+              \item Eyes of AI
+          \end{enumerate}
+\end{enumerate}
+
+
+goal of computer vision
+• Compute the 3D shape of the world
+• Recognize objects and people
+• Improve photos (“Computational Photography”)
+
+
+Challenges of computer vision
+Viewpoint variation
+Illumination
+Scale
+Intra-class variation (elements of the same class can vary a lot (example in the class of ferraris there are newer and older models))
+Motion (The subject in the image might be moving fast)
+Occlusion (The subject in the immage might be partially hidden behind other objects)
+Background clutter (Difficult to distinguish the subject form a cluttery background)
+
+
+
+Computer vision uses knowledge from
+physics
+math
+Statistical learning
+
+Related fields are
+image processing
+computer graphics
+
+
+\section{Image filtering}
+What is an image
+• A grid (matrix) of intensity values
+
+grayscale image: 1 matrix
+RGB image: 3 matrices
+
+(common to use one byte per value: 0 = black, 255 = white)
+1 byte per color means 24 bits that are 16ml colors
+
+Since 2d images are projections of 3d images there is a loss of information. To rebuild the 3d scenario we need additional prior information on the context or structure of the world
+
+
+We can think of a (grayscale, continuous)
+image as a function, f, from R2 to R:
+f (x,y) gives the intensity at position (x,y)
+
+
+A digital image is a discrete (sampled, quantized)
+version of this function
+
+quantization is lossy
+
+As with any function, we can apply operators to
+an image
+
+\subsection{Convolutional filter (Linear filtering)}
+Is a transformation
+
