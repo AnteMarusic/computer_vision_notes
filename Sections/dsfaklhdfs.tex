@@ -22,59 +22,232 @@ from an image.
 \end{enumerate}
 
 
-goal of computer vision
-• Compute the 3D shape of the world
-• Recognize objects and people
-• Improve photos (“Computational Photography”)
+\paragraph*{goal of computer vision}
+\begin{enumerate}
+    \item Compute the 3D shape of the world
+    \item Recognize objects and people
+    \item Improve photos (“Computational Photography”)
+\end{enumerate}
 
 
-Challenges of computer vision
-Viewpoint variation
-Illumination
-Scale
-Intra-class variation (elements of the same class can vary a lot (example in the class of ferraris there are newer and older models))
-Motion (The subject in the image might be moving fast)
-Occlusion (The subject in the immage might be partially hidden behind other objects)
-Background clutter (Difficult to distinguish the subject form a cluttery background)
-
-
+\paragraph*{Challenges of computer vision}
+\begin{enumerate}
+    \item Viewpoint variation
+    \item Illumination
+    \item Scale
+    \item Intra-class variation (elements of the same class can vary a lot (example in the class of ferraris there are newer and older models))
+    \item Motion (The subject in the image might be moving fast)
+    \item Occlusion (The subject in the immage might be partially hidden behind other objects)
+    \item Background clutter (Difficult to distinguish the subject form a cluttery background)
+\end{enumerate}
 
 Computer vision uses knowledge from
-physics
-math
-Statistical learning
-
-Related fields are
-image processing
-computer graphics
+\begin{enumerate}
+    \item physics
+    \item math
+    \item Statistical learning
+\end{enumerate}
 
 
-\section{Image filtering}
-What is an image
-• A grid (matrix) of intensity values
-
-grayscale image: 1 matrix
-RGB image: 3 matrices
-
-(common to use one byte per value: 0 = black, 255 = white)
-1 byte per color means 24 bits that are 16ml colors
-
-Since 2d images are projections of 3d images there is a loss of information. To rebuild the 3d scenario we need additional prior information on the context or structure of the world
+\paragraph*{Related fields are:}
+\begin{enumerate}
+    \item image processing
+    \item computer graphics
+\end{enumerate}
 
 
-We can think of a (grayscale, continuous)
-image as a function, f, from R2 to R:
-f (x,y) gives the intensity at position (x,y)
+\paragraph*{What is an image}
+\begin{itemize}
+    \item A grid/matrix of intensity values.
+    \item We can think of a (grayscale, continuous)
+          image as a function, f, from R2 to R: f (x,y) gives
+          the intensity at position (x,y)
+    \item A digital image is a discrete (sampled, quantized)
+          version of this function
+\end{itemize}
 
 
-A digital image is a discrete (sampled, quantized)
-version of this function
+\begin{itemize}
+    \item quantization is lossy
+    \item As with any function, we can apply operators to an image
+\end{itemize}
 
-quantization is lossy
 
-As with any function, we can apply operators to
-an image
+\paragraph*{Current standard}
+\begin{enumerate}
+    \item grayscale image: 1 matrix
+    \item RGB image: 3 matrices
+    \item (common to use one byte per value: 0 = black, 255 = white)
+          1 byte per color means 24 bits that are 16ml colors
+\end{enumerate}
 
-\subsection{Convolutional filter (Linear filtering)}
-Is a transformation
+Since 2d images are projections of 3d images there is a loss of information.
+To rebuild the 3d scenario we need additional prior information on the context or
+structure of the world.
+
+
+
+\subsection[short]{Filters}
+filters are transformations of the image (since the image is a function we can
+apply transformations to it).\\
+Filters are a key component of convolutional NN.
+
+\paragraph*{Linear filters}
+Replace each pixel by a linear combination (a weighted
+sum) of its neighbors.
+The weights for the linear combination is called the
+“kernel” (or “mask”, “filter”).
+
+Includes cross-correlation and convolution.
+
+\paragraph*{Cross-correlation}
+Let be the image, be the kernel (of
+size 2k+1 x 2k+1), and be the output
+image
+
+\[
+    G[i,j] = \sum_{u=-k}^{k} \sum_{v=-k}^{k} H[u,v] F[i+u, j+v]
+\]
+
+In short form:
+\[
+    G = H \otimes F
+\]
+
+\paragraph*{Convolution}
+Same as cross-correlation, except that the
+kernel is “flipped” (horizontally and vertically)
+
+\[
+    G[i,j] = \sum_{u=-k}^{k} \sum_{v=-k}^{k} H[u,v] F[i-u, j-v]
+\]
+
+In short form:
+\[
+    G = H * F
+\]
+
+\paragraph*{Properties}
+\begin{itemize}
+    \item Convolution is commutative and associative.
+    \item Correlation is not associative
+\end{itemize}
+
+
+\paragraph*{Complexity of convolution}
+Suppose the resolution of a grayscale image is HxW, the kernel size is KxK, and
+padding is used to retain the image resolution.
+\[HWK^2\]
+
+
+\paragraph*{Examples}
+\paragraph*{Mean filtering}
+
+\[
+    \frac{1}{9}
+    \begin{bmatrix}
+        1 & 1 & 1 \\
+        1 & 1 & 1 \\
+        1 & 1 & 1
+    \end{bmatrix}
+\]
+Goal: Removes “high-frequency” components from the
+image (low-pass filter) (Images become more smooth)
+
+
+\paragraph*{Identical image}
+\[
+    \frac{1}{9}
+    \begin{bmatrix}
+        0 & 0 & 0 \\
+        0 & 1 & 0 \\
+        0 & 0 & 0
+    \end{bmatrix}
+\]
+
+
+\paragraph*{Image shifted left by one pixel}
+\[
+    \frac{1}{9}
+    \begin{bmatrix}
+        0 & 0 & 0 \\
+        1 & 0 & 0 \\
+        0 & 0 & 0
+    \end{bmatrix}
+\]
+
+
+\paragraph*{sharpening filter}
+\[
+    \left(
+    \begin{bmatrix}
+        0 & 0 & 0 \\
+        0 & 2 & 0 \\
+        0 & 0 & 0
+    \end{bmatrix}
+    -
+    \frac{1}{9}
+    \begin{bmatrix}
+        1 & 1 & 1 \\
+        1 & 1 & 1 \\
+        1 & 1 & 1
+    \end{bmatrix}
+    \right)
+    =
+\]
+
+
+\paragraph*{Detail extraction and sharpening revisited}
+\begin{figure}[H]
+    \centering
+    \includegraphics*[width=0.5\textwidth]{Pictures/High_passing.png}
+    \caption{Sharpening}
+    \label{<label>}
+\end{figure}
+
+
+\paragraph*{Gaussian kernel}
+\[
+    G_\sigma = \frac{1}{2\pi\sigma^2} e^{-\frac{x^2 + y^2}{2\sigma^2}}
+\]
+Multiply the kernel for constant factor at front makes volume sum to 1\\
+
+Goal: Removes “high-frequency” components from the
+image (low-pass filter) (Images become more smooth)\\
+
+Convolution with self is another Gaussian.
+
+
+\paragraph*{Non linear filters}
+\paragraph*{Median filter}
+Replace each pixel with the median value of the window.
+
+\begin{itemize}
+    \item Is a median filter a kind of convolution?
+          No is a non linear filter that applies the median operation.
+          It can't be recreated by multipling a matrix
+    \item More robust average than the mean
+    \item a single very noisy pixel in a neighborhood will not
+          affect the median value significantly.
+    \item Better at preserving sharp edges than the
+          mean filter
+    \item does not create new unrealistic pixel values when
+          the filter straddles an edge
+\end{itemize}
+
+Usage:
+\begin{itemize}
+    \item Used for noise reduction
+          because it effectively removes outliers while preserving edges.
+    \item Advantage for removing salt and pepper pixels
+    \item The best thing would be to take lots of image and average them
+\end{itemize}
+
+\paragraph*{Comparison between convolution and Median filter}
+\begin{itemize}
+    \item Convolution is used for
+          Blurring, sharpening, edge detection.
+    \item Median is for
+          Noise reduction (especially salt-and-pepper noise).
+\end{itemize}
 
