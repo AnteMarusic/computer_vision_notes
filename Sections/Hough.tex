@@ -1,0 +1,50 @@
+\section{Line fitting}
+Approximate the underling distribution of a dataset by
+finding the line that minimizes the MSE.
+
+\[
+    MSE = \frac{1}{N} \sum_{i=1}^{N} \left( y_i - mx_i - c \right)^2
+\]
+where \( N \) is the number of data points.
+observed values \( y_i \) and the predicted values
+\( \hat{y}_i = mx_i + c \).
+
+\paragraph*{Minimizing the Error}
+To minimize the MSE we take the partial derivatives of \( E \)
+with respect to both \( m \) and
+\( c \), and set them to zero. This yields two equations that
+can be solved for \( m \) and \( c \).
+
+\paragraph*{Derivative with respect to \( m \)}
+The partial derivative of \( E \) with respect to \( m \) is:
+\[
+    \frac{\partial E}{\partial m} = - \frac{2}{N} \sum_{i=1}^{N} x_i \left( y_i - mx_i - c \right) = 0
+\]
+
+\[
+    m = \frac{\sum_{i=1}^{N} (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{N} (x_i - \bar{x})^2}
+\]
+
+\paragraph*{Derivative with respect to \(b\)}
+
+\[
+    \frac{\partial E}{\partial c} = - \frac{2}{N} \sum_{i=1}^{N} \left( y_i - mx_i - c \right) = 0
+\]
+
+\[
+    c = \bar{y} - m\bar{x}
+\]
+
+\paragraph*{definitions}
+
+\[
+    \bar{x} = \frac{1}{N} \sum_{i=1}^{N} x_i, \quad \bar{y} = \frac{1}{N} \sum_{i=1}^{N} y_i
+\]
+
+\subsection{Problems of this approach}
+The MSE and the LSE $(LSE = MSE * N)$ are both influenced heavily by outliers
+because of the square.
+
+Moreover the distance measure that they provide is not the distance between
+the points and the line, but just the vertical distance (subtracting the Ys)
+\end{document}

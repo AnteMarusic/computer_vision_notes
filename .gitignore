@@ -21,3 +21,6 @@
 
 # Ignore VSCode-specific files (if applicable)
 .vscode/
+
+# Ignore apple file system
+.DS_Store
